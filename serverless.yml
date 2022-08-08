@@ -1,6 +1,4 @@
 service: GOV-EC2-TAG
-org: lukado
-app: govec2tag
 frameworkVersion: '3'
 
 provider:
