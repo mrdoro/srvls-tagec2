@@ -1,0 +1,33 @@
+service: GOV-EC2-TAG
+org: lukado
+app: govec2tag
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.7
+  region: eu-west-1
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'ec2:CreateTags'
+          Resource: 'arn:aws:ec2:*:*:*'
+
+
+functions:
+  GOV-EC2-TAG:
+    handler: taglambda.lambda_handler
+    events:
+      - eventBridge:
+          pattern: 
+            source:
+              - 'aws.ec2'
+            detail-type:
+              - 'AWS API Call via CloudTrail'
+            detail:
+              eventSource:
+                - ec2.amazonaws.com
+              eventName:
+                - RunInstances
